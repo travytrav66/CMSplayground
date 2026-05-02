@@ -103,6 +103,13 @@ export default function SectionEditorPanel({ section, selection, onBack, onNavig
                             {items.length > 0 ? (
                                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
                                     <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
+                                        {!isDragging && (
+                                            <div className="pb-insert-zone">
+                                                <button className="pb-insert-btn" onClick={() => onAddItem(0)} title="Add item here">
+                                                    <PlusIcon />
+                                                </button>
+                                            </div>
+                                        )}
                                         {items.map((item, idx) => (
                                             <div key={item.id}>
                                                 <SortableItemRow item={item} isActive={selectedItemId === item.id} onClick={() => onNavigateToItem(item.id)} onToggleHidden={() => onToggleItemVisibility(item.id)} />

@@ -49,6 +49,13 @@ export default function SectionsListPanel({ sections, onSelect, onStartAdd, onRe
                             <div className="pb-items-list">
                                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
                                     <SortableContext items={sections.map((s) => s.id)} strategy={verticalListSortingStrategy}>
+                                        {!isDragging && sections.length > 0 && (
+                                            <div className="pb-insert-zone">
+                                                <button className="pb-insert-btn" onClick={() => onStartAdd(0)} title="Add section here">
+                                                    <PlusIcon />
+                                                </button>
+                                            </div>
+                                        )}
                                         {sections.map((section, idx) => (
                                             <div key={section.id}>
                                                 <SortableSectionRow section={section} onSelect={onSelect} onToggleVisibility={onToggleVisibility} />
