@@ -27,11 +27,31 @@
 .pb-topbar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 11px 14px;
     border-bottom: 1px solid #f0f0f0;
     background: #fafafa;
     flex-shrink: 0;
+    gap: 5px;
+}
+
+.pb-topbar-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    color: #6b7280;
+    text-decoration: none;
+    flex-shrink: 0;
+    transition:
+        background 0.15s,
+        color 0.15s;
+}
+
+.pb-topbar-back:hover {
+    background: #f3f4f6;
+    color: #111827;
 }
 
 .pb-topbar-logo {
@@ -596,7 +616,9 @@
     background: none;
     cursor: pointer;
     color: #9ca3af;
-    transition: background 0.12s, color 0.12s;
+    transition:
+        background 0.12s,
+        color 0.12s;
 }
 
 .pb-modal-close:hover {
@@ -629,7 +651,9 @@
     border: 1px solid #d1d5db;
     border-radius: 7px;
     cursor: pointer;
-    transition: background 0.12s, border-color 0.12s;
+    transition:
+        background 0.12s,
+        border-color 0.12s;
 }
 
 .pb-modal-cancel:hover {
@@ -978,7 +1002,9 @@
     background: none;
     border: none;
     cursor: pointer;
-    transition: background 0.12s, color 0.12s;
+    transition:
+        background 0.12s,
+        color 0.12s;
 }
 
 .pb-add-full-btn:hover {
