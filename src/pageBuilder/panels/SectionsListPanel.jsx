@@ -4,7 +4,7 @@ import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrate
 import { SortableSectionRow, SectionRowClone } from "../dndRows"
 import { ChevronRightIcon, PlusIcon, LayersIcon, SettingsGearIcon } from "../icons"
 
-export default function SectionsListPanel({ sections, onSelect, onStartAdd, onReorder, onToggleVisibility, meta, onMetaChange }) {
+export default function SectionsListPanel({ sections, onSelect, onStartAdd, onReorder, onToggleVisibility, onDeleteSection, meta, onMetaChange }) {
     const [activeId, setActiveId] = useState(null)
     const [sectionsOpen, setSectionsOpen] = useState(true)
     const [settingsOpen, setSettingsOpen] = useState(false)
@@ -35,55 +35,10 @@ export default function SectionsListPanel({ sections, onSelect, onStartAdd, onRe
 
             <div className="pb-section-list">
                 <div className="pb-accordion">
-                    <button className={`pb-accordion-header${sectionsOpen ? " open" : ""}`} onClick={() => setSectionsOpen((v) => !v)}>
-                        <span className="pb-accordion-label-group">
-                            <span className="pb-accordion-icon"><LayersIcon /></span>
-                            <span className="pb-accordion-label">Page Sections ({sections.length})</span>
-                        </span>
-                        <span className={`pb-accordion-chevron${sectionsOpen ? " open" : ""}`}>
-                            <ChevronRightIcon />
-                        </span>
-                    </button>
-                    {sectionsOpen && (
-                        <div className="pb-accordion-body pb-accordion-body--flush">
-                            <div className="pb-items-list">
-                                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-                                    <SortableContext items={sections.map((s) => s.id)} strategy={verticalListSortingStrategy}>
-                                        {!isDragging && sections.length > 0 && (
-                                            <div className="pb-insert-zone">
-                                                <button className="pb-insert-btn" onClick={() => onStartAdd(0)} title="Add section here">
-                                                    <PlusIcon />
-                                                </button>
-                                            </div>
-                                        )}
-                                        {sections.map((section, idx) => (
-                                            <div key={section.id}>
-                                                <SortableSectionRow section={section} onSelect={onSelect} onToggleVisibility={onToggleVisibility} />
-                                                {!isDragging && idx < sections.length - 1 && (
-                                                    <div className="pb-insert-zone">
-                                                        <button className="pb-insert-btn" onClick={() => onStartAdd(idx + 1)} title="Add section here">
-                                                            <PlusIcon />
-                                                        </button>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </SortableContext>
-                                    <DragOverlay dropAnimation={null}>{activeSection ? <SectionRowClone section={activeSection} /> : null}</DragOverlay>
-                                </DndContext>
-                            </div>
-                            <button className="pb-add-full-btn" onClick={() => onStartAdd(sections.length)}>
-                                <PlusIcon /> Add Section
-                            </button>
-                        </div>
-                    )}
-                </div>
-
-                <div className="pb-accordion">
                     <button className={`pb-accordion-header${settingsOpen ? " open" : ""}`} onClick={() => setSettingsOpen((v) => !v)}>
                         <span className="pb-accordion-label-group">
                             <span className="pb-accordion-icon"><SettingsGearIcon /></span>
-                            <span className="pb-accordion-label">Settings</span>
+                            <span className="pb-accordion-label">Page Settings</span>
                         </span>
                         <span className={`pb-accordion-chevron${settingsOpen ? " open" : ""}`}>
                             <ChevronRightIcon />
@@ -112,6 +67,51 @@ export default function SectionsListPanel({ sections, onSelect, onStartAdd, onRe
                                     <textarea className="pb-input pb-textarea" value={meta.metaDescription} onChange={(e) => onMetaChange("metaDescription", e.target.value)} rows={3} placeholder="Brief description for search results" />
                                 </div>
                             </div>
+                        </div>
+                    )}
+                </div>
+
+                <div className="pb-accordion">
+                    <button className={`pb-accordion-header${sectionsOpen ? " open" : ""}`} onClick={() => setSectionsOpen((v) => !v)}>
+                        <span className="pb-accordion-label-group">
+                            <span className="pb-accordion-icon"><LayersIcon /></span>
+                            <span className="pb-accordion-label">Page Sections ({sections.length})</span>
+                        </span>
+                        <span className={`pb-accordion-chevron${sectionsOpen ? " open" : ""}`}>
+                            <ChevronRightIcon />
+                        </span>
+                    </button>
+                    {sectionsOpen && (
+                        <div className="pb-accordion-body pb-accordion-body--flush">
+                            <div className="pb-items-list">
+                                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+                                    <SortableContext items={sections.map((s) => s.id)} strategy={verticalListSortingStrategy}>
+                                        {!isDragging && sections.length > 0 && (
+                                            <div className="pb-insert-zone">
+                                                <button className="pb-insert-btn" onClick={() => onStartAdd(0)} title="Add section here">
+                                                    <PlusIcon />
+                                                </button>
+                                            </div>
+                                        )}
+                                        {sections.map((section, idx) => (
+                                            <div key={section.id}>
+                                                <SortableSectionRow section={section} onSelect={onSelect} onToggleVisibility={onToggleVisibility} onDelete={onDeleteSection} />
+                                                {!isDragging && idx < sections.length - 1 && (
+                                                    <div className="pb-insert-zone">
+                                                        <button className="pb-insert-btn" onClick={() => onStartAdd(idx + 1)} title="Add section here">
+                                                            <PlusIcon />
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </SortableContext>
+                                    <DragOverlay dropAnimation={null}>{activeSection ? <SectionRowClone section={activeSection} /> : null}</DragOverlay>
+                                </DndContext>
+                            </div>
+                            <button className="pb-add-full-btn" onClick={() => onStartAdd(sections.length)}>
+                                <PlusIcon /> Add Section
+                            </button>
                         </div>
                     )}
                 </div>

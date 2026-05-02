@@ -31,7 +31,7 @@ export default function ItemEditorPanel({ section, item, onBackToSection, onBack
                     {fieldDefs.map((field) => (
                         <div className="pb-field" key={field.key}>
                             <label className="pb-field-label">{field.label}</label>
-                            <FieldInput field={field} value={item.fields[field.key]} onChange={(val) => onFieldChange(field.key, val)} />
+                            <FieldInput field={field} value={item.fields[field.key]} onChange={(val) => onFieldChange(field.key, val)} allValues={item.fields} onAnyFieldChange={onFieldChange} />
                         </div>
                     ))}
                 </div>

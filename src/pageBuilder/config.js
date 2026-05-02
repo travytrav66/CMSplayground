@@ -95,6 +95,18 @@ export const initialSections = [
             },
         ],
     },
+    {
+        id: "s-gallery",
+        type: "Gallery",
+        fields: {
+            theme: "white",
+            padding: "default",
+            layout: "3-col",
+            heading: "Gallery",
+            subheading: "",
+        },
+        items: [],
+    },
 ]
 
 export const THEME_OPTIONS = [
@@ -155,6 +167,14 @@ export const PADDING_OPTIONS = [
     { value: "small", label: "Small" },
 ]
 
+export const LAYOUT_OPTIONS = [
+    { value: "2-col", label: "2 Columns" },
+    { value: "3-col", label: "3 Columns" },
+    { value: "4-col", label: "4 Columns" },
+    { value: "masonry", label: "Masonry" },
+    { value: "featured", label: "Featured (1 large + grid)" },
+]
+
 export const FIELD_DEFS = {
     Hero: [
         { key: "theme", label: "Theme", type: "select", options: THEME_OPTIONS, group: "style" },
@@ -187,9 +207,18 @@ export const FIELD_DEFS = {
         { key: "subheading", label: "Subheading", type: "text" },
     ],
     Feature: [
-        { key: "icon", label: "Icon (emoji)", type: "text" },
         { key: "title", label: "Title", type: "text" },
         { key: "description", label: "Description", type: "textarea" },
+    ],
+    Gallery: [
+        { key: "theme", label: "Theme", type: "select", options: THEME_OPTIONS, group: "style" },
+        { key: "padding", label: "Padding", type: "select", options: PADDING_OPTIONS, group: "style" },
+        { key: "layout", label: "Layout", type: "select", options: LAYOUT_OPTIONS, group: "style" },
+        { key: "heading", label: "Heading", type: "text" },
+        { key: "subheading", label: "Subheading", type: "text" },
+    ],
+    Image: [
+        { key: "url", label: "Image", type: "image" },
     ],
 }
 
@@ -197,23 +226,27 @@ export const SECTION_META = {
     Hero: { icon: "🖼", label: "Hero Section", bgColor: "#f0f4ff", hasItems: false },
     Packages: { icon: "📦", label: "Packages", bgColor: "#fff7ed", hasItems: true, itemType: "Package" },
     Features: { icon: "⭐", label: "Features", bgColor: "#f0fdf4", hasItems: true, itemType: "Feature" },
+    Gallery: { icon: "🖼", label: "Gallery", bgColor: "#fdf4ff", hasItems: true, itemType: "Image" },
 }
 
 export const DEFAULT_ITEM_FIELDS = {
     Package: { name: "New Package", description: "Package description", price: "$0", period: "/month", featured: false, accentColor: "#cccccc" },
-    Feature: { icon: "⭐", title: "New Feature", description: "Feature description" },
+    Feature: { title: "New Feature", description: "Feature description" },
+    Image: { url: "", alt: "", caption: "", filename: "" },
 }
 
 export const DEFAULT_SECTION_FIELDS = {
     Hero: { theme: "white", padding: "default", textAlign: "center", eyebrow: "", title: "New Hero Section", subtitle: "Add your subtitle here.", ctaText: "Learn More", ctaUrl: "#" },
     Packages: { theme: "white", padding: "default", heading: "Our Packages", subheading: "Choose the plan that works for you" },
     Features: { theme: "white", padding: "default", heading: "Features", subheading: "Everything you need to succeed" },
+    Gallery: { theme: "white", padding: "default", layout: "3-col", heading: "", subheading: "" },
 }
 
 export const SECTION_DESCRIPTIONS = {
     Hero: "Full-width banner with title, subtitle, and a call-to-action button",
     Packages: "Pricing cards — add and edit individual package items",
     Features: "Icon + text feature grid with nested feature items",
+    Gallery: "Image grid with multiple layout options",
 }
 
 export const VIEWPORTS = [

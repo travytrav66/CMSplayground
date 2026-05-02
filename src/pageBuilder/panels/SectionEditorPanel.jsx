@@ -23,7 +23,7 @@ function Accordion({ label, icon, open, onToggle, children, bodyClass }) {
     )
 }
 
-export default function SectionEditorPanel({ section, selection, onBack, onNavigateToItem, onFieldChange, onAddItem, onDeleteSection, onReorderItems, onToggleItemVisibility }) {
+export default function SectionEditorPanel({ section, selection, onBack, onNavigateToItem, onFieldChange, onAddItem, onDeleteSection, onDeleteItem, onReorderItems, onToggleItemVisibility }) {
     const meta = SECTION_META[section.type] || {}
     const fieldDefs = FIELD_DEFS[section.type] || []
     const selectedItemId = selection[1] ?? null
@@ -112,7 +112,7 @@ export default function SectionEditorPanel({ section, selection, onBack, onNavig
                                         )}
                                         {items.map((item, idx) => (
                                             <div key={item.id}>
-                                                <SortableItemRow item={item} isActive={selectedItemId === item.id} onClick={() => onNavigateToItem(item.id)} onToggleHidden={() => onToggleItemVisibility(item.id)} />
+                                                <SortableItemRow item={item} isActive={selectedItemId === item.id} onClick={() => onNavigateToItem(item.id)} onToggleHidden={() => onToggleItemVisibility(item.id)} onDelete={() => onDeleteItem(item.id)} />
                                                 {!isDragging && idx < items.length - 1 && (
                                                     <div className="pb-insert-zone">
                                                         <button className="pb-insert-btn" onClick={() => onAddItem(idx + 1)} title="Add item here">

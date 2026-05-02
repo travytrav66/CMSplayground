@@ -8,6 +8,7 @@ import ItemEditorPanel from "./panels/ItemEditorPanel"
 import HeroPreview from "./previews/HeroPreview"
 import PackagesPreview from "./previews/PackagesPreview"
 import FeaturesPreview from "./previews/FeaturesPreview"
+import GalleryPreview from "./previews/GalleryPreview"
 import "./PageBuilder.css"
 
 export default function PageBuilder() {
@@ -190,6 +191,7 @@ export default function PageBuilder() {
                     onFieldChange={(key, val) => updateSectionField(selectedSection.id, key, val)}
                     onAddItem={(idx) => addItem(selectedSection.id, idx)}
                     onDeleteSection={() => deleteSection(selectedSection.id)}
+                    onDeleteItem={(itemId) => deleteItem(selectedSection.id, itemId)}
                     onReorderItems={(from, to) => reorderItems(selectedSection.id, from, to)}
                     onToggleItemVisibility={(itemId) => toggleItemVisibility(selectedSection.id, itemId)}
                 />
@@ -204,6 +206,7 @@ export default function PageBuilder() {
                     setSelection(sel)
                 }}
                 onToggleVisibility={toggleSectionVisibility}
+                onDeleteSection={deleteSection}
                 onStartAdd={(index) => {
                     setSelection(null)
                     setInsertAt(index ?? null)
@@ -217,6 +220,18 @@ export default function PageBuilder() {
     }
 
     function renderPreview() {
+        const visibleSections = sections.filter((s) => !s.hidden)
+        if (sections.length === 0 || visibleSections.length === 0) {
+            return (
+                <div className="pb-preview-empty">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <path d="M3 9h18M9 21V9" />
+                    </svg>
+                    <span>{sections.length === 0 ? "No sections yet" : "All sections are hidden"}</span>
+                </div>
+            )
+        }
         return sections.map((section) => {
             if (section.hidden) return null
             const sectionSelected = selection?.[0] === section.id && !selection?.[1]
@@ -229,6 +244,8 @@ export default function PageBuilder() {
                     return <PackagesPreview key={section.id} section={section} sectionSelected={sectionSelected} selectedItemId={selectedItemId} onSectionClick={() => handleSectionClick(section.id)} onItemClick={(itemId) => handleItemClick(section.id, itemId)} />
                 case "Features":
                     return <FeaturesPreview key={section.id} section={section} sectionSelected={sectionSelected} selectedItemId={selectedItemId} onSectionClick={() => handleSectionClick(section.id)} onItemClick={(itemId) => handleItemClick(section.id, itemId)} />
+                case "Gallery":
+                    return <GalleryPreview key={section.id} section={section} sectionSelected={sectionSelected} selectedItemId={selectedItemId} onSectionClick={() => handleSectionClick(section.id)} onItemClick={(itemId) => handleItemClick(section.id, itemId)} />
                 default:
                     return null
             }

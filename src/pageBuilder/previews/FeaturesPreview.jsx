@@ -36,7 +36,6 @@ export default function FeaturesPreview({ section, sectionSelected, selectedItem
                                         onItemClick(item.id)
                                     }}>
                                     {isItemSelected && <span className="pb-item-label">Feature</span>}
-                                    <div style={{ fontSize: 28, lineHeight: 1, flexShrink: 0 }}>{ff.icon}</div>
                                     <div>
                                         <h3 style={{ fontSize: 15, fontWeight: 700, color: t.cardHeading, margin: "0 0 5px" }}>{ff.title}</h3>
                                         <p style={{ fontSize: 13, color: t.cardBody, margin: 0, lineHeight: 1.55 }}>{ff.description}</p>

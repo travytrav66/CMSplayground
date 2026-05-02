@@ -1,9 +1,9 @@
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-import { DragHandleIcon, EyeIcon, EyeOffIcon, ChevronRightIcon } from "./icons"
+import { DragHandleIcon, EyeIcon, EyeOffIcon, ChevronRightIcon, TrashIcon } from "./icons"
 import { SECTION_META } from "./config"
 
-export function SortableSectionRow({ section, onSelect, onToggleVisibility }) {
+export function SortableSectionRow({ section, onSelect, onToggleVisibility, onDelete }) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: section.id })
     const meta = SECTION_META[section.type] || {}
     const sub = section.fields.heading || section.fields.title || ""
@@ -26,6 +26,15 @@ export function SortableSectionRow({ section, onSelect, onToggleVisibility }) {
                 }}
                 title={hidden ? "Show section" : "Hide section"}>
                 {hidden ? <EyeOffIcon /> : <EyeIcon />}
+            </button>
+            <button
+                className="pb-row-delete-btn"
+                onClick={(e) => {
+                    e.stopPropagation()
+                    onDelete(section.id)
+                }}
+                title="Delete section">
+                <TrashIcon />
             </button>
             <span className="pb-chevron">
                 <ChevronRightIcon />
@@ -54,9 +63,9 @@ export function SectionRowClone({ section }) {
     )
 }
 
-export function SortableItemRow({ item, isActive, onClick, onToggleHidden }) {
+export function SortableItemRow({ item, isActive, onClick, onToggleHidden, onDelete }) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: item.id })
-    const name = item.fields.name || item.fields.title || "Untitled"
+    const name = item.fields.name || item.fields.title || item.fields.filename || "Untitled"
     const hidden = !!item.hidden
 
     return (
@@ -77,6 +86,15 @@ export function SortableItemRow({ item, isActive, onClick, onToggleHidden }) {
                 title={hidden ? "Show" : "Hide"}>
                 {hidden ? <EyeOffIcon /> : <EyeIcon />}
             </button>
+            <button
+                className="pb-row-delete-btn"
+                onClick={(e) => {
+                    e.stopPropagation()
+                    onDelete()
+                }}
+                title="Delete">
+                <TrashIcon />
+            </button>
             <span className="pb-item-chevron">
                 <ChevronRightIcon />
             </span>
@@ -85,7 +103,7 @@ export function SortableItemRow({ item, isActive, onClick, onToggleHidden }) {
 }
 
 export function ItemRowClone({ item }) {
-    const name = item.fields.name || item.fields.title || "Untitled"
+    const name = item.fields.name || item.fields.title || item.fields.filename || "Untitled"
     const hidden = !!item.hidden
     return (
         <div className={`pb-item-row pb-row-drag-clone${hidden ? " pb-row-hidden" : ""}`}>
