@@ -1,30 +1,46 @@
 import { useState, useEffect, useRef } from "react"
-import { GridIcon, DesktopIcon, MobileIcon } from "./icons"
+import { DesktopIcon, MobileIcon } from "../pageBuilder/icons"
 import { initialSections, genId, SECTION_META, DEFAULT_ITEM_FIELDS, DEFAULT_SECTION_FIELDS, VIEWPORTS } from "./config"
 import SectionsListPanel from "./panels/SectionsListPanel"
 import AddSectionPanel from "./panels/AddSectionPanel"
 import SectionEditorPanel from "./panels/SectionEditorPanel"
 import ItemEditorPanel from "./panels/ItemEditorPanel"
-import HeroPreview from "./previews/HeroPreview"
-import PackagesPreview from "./previews/PackagesPreview"
-import FeaturesPreview from "./previews/FeaturesPreview"
-import GalleryPreview from "./previews/GalleryPreview"
-import "./PageBuilder.css"
+import ArticleHeaderPreview from "./previews/ArticleHeaderPreview"
+import TextBlockPreview from "./previews/TextBlockPreview"
+import PullQuotePreview from "./previews/PullQuotePreview"
+import ImageCaptionPreview from "./previews/ImageCaptionPreview"
+import ImageGridPreview from "./previews/ImageGridPreview"
+import "./ArticleBuilder.css"
 
-export default function PageBuilder({ onBack }) {
+export default function ArticleBuilder({ onBack }) {
     const [sections, setSections] = useState(initialSections)
     // selection: null | [sectionId] | [sectionId, itemId]
     const [selection, setSelection] = useState(null)
     const [viewport, setViewport] = useState("desktop")
     const [addingSection, setAddingSection] = useState(false)
     const [insertAt, setInsertAt] = useState(null)
-    const [pageMeta, setPageMeta] = useState({ pageName: "Homepage", slug: "", metaTitle: "", metaDescription: "", schema: "" })
-    // publish state: 'draft' | 'saved' | 'published' | 'modified'
+    const [articleMeta, setArticleMeta] = useState({ articleTitle: "My Article", slug: "/my-article", metaTitle: "", metaDescription: "", schema: "" })
+    const [schemaIsManual, setSchemaIsManual] = useState(false)
     const [publishStatus, setPublishStatus] = useState("draft")
     const [saveFlash, setSaveFlash] = useState(false)
     const [customWidth, setCustomWidth] = useState(null)
     const [isResizing, setIsResizing] = useState(false)
     const previewFrameRef = useRef(null)
+
+    function generateArticleSchema({ articleTitle, metaTitle, metaDescription, slug }) {
+        const obj = { "@context": "https://schema.org", "@type": "Article" }
+        const headline = metaTitle || articleTitle
+        if (headline) obj.headline = headline
+        if (metaDescription) obj.description = metaDescription
+        if (slug) obj.url = slug
+        return JSON.stringify(obj, null, 2)
+    }
+
+    // Auto-fill schema from meta fields unless the user has manually edited it
+    useEffect(() => {
+        if (schemaIsManual) return
+        setArticleMeta((prev) => ({ ...prev, schema: generateArticleSchema(prev) }))
+    }, [articleMeta.articleTitle, articleMeta.slug, articleMeta.metaTitle, articleMeta.metaDescription, schemaIsManual]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => { setCustomWidth(null) }, [viewport])
 
@@ -37,8 +53,13 @@ export default function PageBuilder({ onBack }) {
     }, [selection?.[0]])
 
     function updateMeta(key, value) {
-        setPageMeta((prev) => ({ ...prev, [key]: value }))
+        if (key === "schema") setSchemaIsManual(true)
+        setArticleMeta((prev) => ({ ...prev, [key]: value }))
         setPublishStatus((prev) => (prev === "published" ? "modified" : prev === "saved" ? "modified" : prev))
+    }
+
+    function resetSchemaToAuto() {
+        setSchemaIsManual(false)
     }
 
     function markDirty() {
@@ -213,8 +234,10 @@ export default function PageBuilder({ onBack }) {
                     setAddingSection(true)
                 }}
                 onReorder={reorderSections}
-                meta={pageMeta}
+                meta={articleMeta}
                 onMetaChange={updateMeta}
+                schemaIsManual={schemaIsManual}
+                onSchemaReset={resetSchemaToAuto}
             />
         )
     }
@@ -225,27 +248,33 @@ export default function PageBuilder({ onBack }) {
             return (
                 <div className="pb-preview-empty">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="3" y="3" width="18" height="18" rx="2" />
-                        <path d="M3 9h18M9 21V9" />
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                        <polyline points="10 9 9 9 8 9" />
                     </svg>
                     <span>{sections.length === 0 ? "No sections yet" : "All sections are hidden"}</span>
                 </div>
             )
         }
+
         return sections.map((section) => {
             if (section.hidden) return null
             const sectionSelected = selection?.[0] === section.id && !selection?.[1]
             const selectedItemId = selection?.[0] === section.id ? (selection?.[1] ?? null) : null
 
             switch (section.type) {
-                case "Hero":
-                    return <HeroPreview key={section.id} section={section} isSelected={sectionSelected} onClick={() => handleSectionClick(section.id)} />
-                case "Packages":
-                    return <PackagesPreview key={section.id} section={section} sectionSelected={sectionSelected} selectedItemId={selectedItemId} onSectionClick={() => handleSectionClick(section.id)} onItemClick={(itemId) => handleItemClick(section.id, itemId)} />
-                case "Features":
-                    return <FeaturesPreview key={section.id} section={section} sectionSelected={sectionSelected} selectedItemId={selectedItemId} onSectionClick={() => handleSectionClick(section.id)} onItemClick={(itemId) => handleItemClick(section.id, itemId)} />
-                case "Gallery":
-                    return <GalleryPreview key={section.id} section={section} sectionSelected={sectionSelected} selectedItemId={selectedItemId} onSectionClick={() => handleSectionClick(section.id)} onItemClick={(itemId) => handleItemClick(section.id, itemId)} />
+                case "ArticleHeader":
+                    return <ArticleHeaderPreview key={section.id} section={section} isSelected={sectionSelected} onClick={() => handleSectionClick(section.id)} />
+                case "TextBlock":
+                    return <TextBlockPreview key={section.id} section={section} isSelected={sectionSelected} onClick={() => handleSectionClick(section.id)} />
+                case "PullQuote":
+                    return <PullQuotePreview key={section.id} section={section} isSelected={sectionSelected} onClick={() => handleSectionClick(section.id)} />
+                case "ImageCaption":
+                    return <ImageCaptionPreview key={section.id} section={section} isSelected={sectionSelected} onClick={() => handleSectionClick(section.id)} />
+                case "ImageGrid":
+                    return <ImageGridPreview key={section.id} section={section} sectionSelected={sectionSelected} selectedItemId={selectedItemId} onSectionClick={() => handleSectionClick(section.id)} onItemClick={(itemId) => handleItemClick(section.id, itemId)} />
                 default:
                     return null
             }
@@ -290,10 +319,15 @@ export default function PageBuilder({ onBack }) {
                             </button>
                         )}
                         <div className="pb-topbar-logo">
-                            <div className="pb-topbar-icon">
-                                <GridIcon />
-                            </div>
-                            Page Builder
+                        <div className="pb-topbar-icon ab-topbar-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="16" y1="13" x2="8" y2="13" />
+                                <line x1="16" y1="17" x2="8" y2="17" />
+                            </svg>
+                        </div>
+                        Article Builder
                         </div>
                     </div>
                 </div>
@@ -338,7 +372,7 @@ export default function PageBuilder({ onBack }) {
                                 <div className="pb-resize-handle-grip" />
                             </div>
                         )}
-                        <div className="pb-preview-frame">
+                        <div className="pb-preview-frame ab-preview-frame">
                             {renderPreview()}
                         </div>
                         {viewport !== "desktop" && (

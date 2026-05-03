@@ -1,0 +1,266 @@
+/* =========================================
+   PagesListPage — content list / dashboard
+   ========================================= */
+
+.pl-root {
+    min-height: 100vh;
+    background: #f9fafb;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ── Header ── */
+.pl-header {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 24px;
+}
+.pl-header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    gap: 16px;
+}
+.pl-heading {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+/* ── New buttons ── */
+.pl-new-btns {
+    display: flex;
+    gap: 8px;
+}
+.pl-new-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    border: 1.5px solid transparent;
+    background: var(--btn-bg);
+    color: var(--btn-color);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.15s;
+    white-space: nowrap;
+}
+.pl-new-btn:hover { filter: brightness(0.95); }
+.pl-new-btn-icon {
+    display: flex;
+    align-items: center;
+}
+
+/* ── Body ── */
+.pl-body {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 28px 24px;
+}
+
+/* ── Tabs ── */
+.pl-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+}
+.pl-tab {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+}
+.pl-tab:hover { background: #f3f4f6; color: #374151; }
+.pl-tab.active { background: #e5e7eb; color: #111827; font-weight: 600; }
+
+/* ── Table ── */
+.pl-table {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.pl-table-head {
+    display: grid;
+    grid-template-columns: 1fr 130px 160px 90px 110px;
+    padding: 10px 16px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 11px;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+.pl-table-row {
+    display: grid;
+    grid-template-columns: 1fr 130px 160px 90px 110px;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background 0.1s;
+    width: 100%;
+    align-items: center;
+}
+.pl-table-row:last-child { border-bottom: none; }
+.pl-table-row:hover { background: #f9fafb; }
+
+/* ── Columns ── */
+.pl-col { display: flex; align-items: center; }
+.pl-col-title { gap: 10px; min-width: 0; }
+.pl-row-icon {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+}
+.pl-row-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pl-type-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 999px;
+}
+.pl-slug {
+    font-size: 12px;
+    color: #9ca3af;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+.pl-date {
+    font-size: 12px;
+    color: #9ca3af;
+}
+.pl-status {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 999px;
+    text-transform: capitalize;
+}
+.pl-status--published { background: #dcfce7; color: #15803d; }
+.pl-status--draft     { background: #f3f4f6; color: #6b7280; }
+
+.pl-empty {
+    padding: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #9ca3af;
+}
+
+/* ── Site Settings button ── */
+.pl-site-settings-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 13px;
+    border-radius: 8px;
+    border: 1.5px solid #e5e7eb;
+    background: #fff;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.pl-site-settings-btn:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+.pl-site-settings-btn.active {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+    color: #111827;
+}
+
+/* ── Site Settings panel ── */
+.pl-site-settings {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+}
+.pl-site-settings-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.pl-site-settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.pl-site-settings-heading {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #374151;
+    letter-spacing: 0.02em;
+}
+.pl-site-settings-hint {
+    font-size: 11px;
+    font-weight: 400;
+    color: #9ca3af;
+    margin-left: 2px;
+}
+
+/* ── Global schema textarea ── */
+.pl-schema-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fafafa;
+    color: #111827;
+    outline: none;
+    resize: vertical;
+    min-height: 130px;
+    box-sizing: border-box;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.pl-schema-textarea:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    background: #fff;
+}
+.pl-schema-status {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    display: inline-block;
+    align-self: flex-start;
+}
+.pl-schema-status--valid { background: #dcfce7; color: #15803d; }
+.pl-schema-status--error { background: #fee2e2; color: #dc2626; }
+
+@media (min-width: 640px) {
+    .pl-header { padding: 0 32px; }
+    .pl-body { padding: 32px; }
+    .pl-site-settings-inner { padding: 20px 32px 28px; }
+}

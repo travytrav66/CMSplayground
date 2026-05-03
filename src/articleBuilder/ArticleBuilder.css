@@ -1,0 +1,111 @@
+/* =========================================
+   ArticleBuilder — inherits all PageBuilder
+   layout/chrome styles, adds article-specific
+   preview typography and section styles.
+   ========================================= */
+
+@import "../pageBuilder/PageBuilder.css";
+
+/* ── Topbar icon variant ── */
+.ab-topbar-icon {
+    background: #1d4ed8;
+}
+
+/* ── Article preview frame — white editorial canvas ── */
+.ab-preview-frame {
+    background: #ffffff;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+/* ── Article Header ── */
+.ab-cover-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    overflow: hidden;
+    background: #f3f4f6;
+}
+.ab-cover-img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.ab-header-content {
+    max-width: 720px; margin: 0 auto; padding: 48px 32px 40px;
+}
+.ab-category-pill {
+    display: inline-block;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #1d4ed8; background: #eff6ff; border-radius: 999px; padding: 3px 10px; margin-bottom: 20px;
+}
+.ab-title {
+    font-size: 40px; font-weight: 700; line-height: 1.18; letter-spacing: -0.02em;
+    color: #111827; margin: 0 0 16px;
+}
+.ab-subtitle {
+    font-size: 18px; line-height: 1.6; color: #6b7280; margin: 0 0 24px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.ab-byline {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 13px; color: #9ca3af; display: flex; align-items: center; gap: 6px; margin-bottom: 28px;
+}
+.ab-byline-author { color: #374151; font-weight: 500; }
+.ab-byline-dot    { color: #d1d5db; }
+.ab-header-rule   { border: none; border-top: 1px solid #f3f4f6; margin: 0; }
+
+/* ── Text Block ── */
+.ab-prose-col { max-width: 680px; margin: 0 auto; padding: 32px; }
+.ab-prose-p   { font-size: 17px; line-height: 1.85; color: #1f2937; margin: 0 0 24px; }
+.ab-prose-p:last-child { margin-bottom: 0; }
+
+/* ── Pull Quote ── */
+.ab-pullquote-col { max-width: 600px; margin: 0 auto; padding: 40px 32px; text-align: center; }
+.ab-pullquote-mark {
+    font-size: 72px; line-height: 0.6; color: #1d4ed8; opacity: 0.2;
+    font-family: Georgia, serif; margin-bottom: 16px; display: block; user-select: none;
+}
+.ab-pullquote-text {
+    font-size: 22px; line-height: 1.55; font-style: italic; color: #111827; margin: 0 0 16px; border: none; padding: 0;
+}
+.ab-pullquote-attribution {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 13px; color: #9ca3af; font-style: normal; display: block;
+}
+
+/* ── Image + Caption ── */
+.ab-img-caption-wrap  { padding: 32px; }
+.ab-img-caption-img   { width: 100%; display: block; border-radius: 6px; background: #f3f4f6; }
+.ab-img-placeholder   {
+    width: 100%; aspect-ratio: 16 / 9; background: #f9fafb;
+    border: 1.5px dashed #e5e7eb; border-radius: 6px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+}
+.ab-img-placeholder--small { aspect-ratio: 4 / 3; }
+.ab-img-caption-text {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 13px; color: #9ca3af; text-align: center; margin: 10px 0 0; font-style: italic;
+}
+
+/* ── Image Grid ── */
+.ab-grid-heading {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 13px; font-weight: 600; color: #9ca3af; text-transform: uppercase;
+    letter-spacing: 0.07em; text-align: center; margin: 0 0 16px; padding: 32px 32px 0;
+}
+.ab-grid-wrap  { display: grid; gap: 12px; padding: 24px 32px 32px; }
+.ab-grid-cell  { position: relative; cursor: pointer; border-radius: 6px; overflow: hidden; transition: outline 0.1s; }
+.ab-grid-cell.selected { outline: 2px solid #6366f1; outline-offset: 2px; }
+.ab-grid-cell--hidden  { opacity: 0.35; }
+.ab-grid-img   { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; background: #f3f4f6; }
+.ab-grid-caption {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 12px; color: #9ca3af; margin: 6px 0 0; font-style: italic; padding: 0 2px;
+}
+.ab-grid-empty {
+    padding: 32px; text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 13px; color: #9ca3af;
+}
+
+@media (min-width: 640px) {
+    .ab-title { font-size: 46px; }
+}
